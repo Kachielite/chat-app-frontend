@@ -1,0 +1,36 @@
+.container {
+    height: 98vh;
+    max-width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.homeContainer {
+    height: 712px;
+    width: 610px;
+    justify-content: space-evenly;
+}
+
+.homeContainer,
+.buttonContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.logoContainer {
+    height: 283px;
+    width: 314px;
+}
+
+p {
+    font-family: 'Poppins';
+    font-size: 36px;
+    color: #27476E;
+}
+
+.buttonContainer {
+    justify-content: space-between;
+    height: 210px;
+}
