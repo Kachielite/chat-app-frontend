@@ -1,0 +1,51 @@
+.container {
+    height: 95vh;
+    width: 100vw;
+    justify-content: center;
+}
+
+.container,
+.signInContainer {
+    display: flex;
+    align-items: center;
+}
+
+.signInContainer {
+    height: 750px;
+    width: 650px;
+    margin-top: 40px;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.logoContainer {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.signInContainer form {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+}
+
+.signInContainer .form_input {
+    height: 225px;
+    width: 650px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 100px;
+}
+
+span {
+    color: #1162E0;
+}
+
+a {
+    text-decoration: none;
+}

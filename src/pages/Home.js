@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import Logo from "../common/images/logo.svg";
-import "../common/css/home.css";
+import "../common/css/pages/home.css";
 
 const Home = () => {
   return (

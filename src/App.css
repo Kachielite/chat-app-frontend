@@ -10,6 +10,23 @@
     src: url(./fonts/Poppins-Regular.ttf) format('truetype');
 }
 
+@font-face {
+    font-family: 'Poppins Semibold';
+    font-weight: 400;
+    src: url(./fonts/Poppins-SemiBold.ttf) format('truetype');
+}
+
+body {
+    margin: 0;
+    width: 100%;
+    height: 95%;
+    overflow: hidden;
+}
+
+input {
+    outline: none;
+}
+
 
 /* .App {
   text-align: center;

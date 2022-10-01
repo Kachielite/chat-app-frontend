@@ -1,0 +1,111 @@
+.options_container {
+    position: absolute;
+    height: 100%;
+    width: 30%;
+    background-color: #1162E0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    color: #FFFF;
+    padding: 10px;
+    z-index: 1;
+}
+
+.close_options {
+    width: 100%;
+    text-align: left;
+    margin-top: 10px;
+    margin-bottom: 29px;
+    cursor: pointer;
+}
+
+.profile_photo_container {
+    width: 100%;
+    height: 280px;
+    margin-bottom: 61px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.edit_button {
+    position: relative;
+    background-color: #1162E0;
+    bottom: 65px;
+    right: -10px;
+    border-radius: 35px;
+    padding: 8px;
+}
+
+.options_container form {
+    height: 373px;
+    width: 351px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+}
+
+.options_container form .form_input {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    color: #001D4A;
+    width: 100%;
+    padding-right: 10px;
+}
+
+.options_container form .form_input input {
+    height: 30px;
+    width: 90%;
+    border: none;
+    font-family: 'Poppins Regular';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 30px;
+    letter-spacing: 0.04em;
+    color: #001D4A;
+    box-shadow: none;
+}
+
+.options_container form button {
+    width: 220px;
+    height: 50px;
+    border: none;
+    font-family: 'Poppins Medium';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    color: #001D4A;
+    border-radius: 10px;
+}
+
+
+/* Smartphones (portrait and landscape) ----------- */
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+    .options_container {
+        width: 100%;
+        min-height: 100%;
+        z-index: 10;
+        padding: 0 10px;
+    }
+    .edit_button {
+        bottom: 65px;
+        right: -10px;
+    }
+    .options_container form {
+        height: 373px;
+        width: 85%;
+    }
+    .options_container form .form_input input {
+        height: 30px;
+        width: 80%;
+    }
+}
