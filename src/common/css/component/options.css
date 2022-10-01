@@ -61,7 +61,7 @@
 }
 
 .options_container form .form_input input {
-    height: 30px;
+    height: 40px;
     width: 90%;
     border: none;
     font-family: 'Poppins Regular';
@@ -92,9 +92,10 @@
 @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
     .options_container {
         width: 100%;
-        min-height: 100%;
+        min-height: 100vh;
         z-index: 10;
         padding: 0 10px;
+        overflow-x: scroll;
     }
     .edit_button {
         bottom: 65px;
@@ -105,7 +106,7 @@
         width: 85%;
     }
     .options_container form .form_input input {
-        height: 30px;
+        height: 45px;
         width: 80%;
     }
 }

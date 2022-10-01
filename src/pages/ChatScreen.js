@@ -75,7 +75,7 @@ const ChatScreen = () => {
                     marginLeft: width < 480 ? "30px" : "50px",
                   }}
                 />
-                <p>Shella</p>
+                <p>Jane</p>
               </div>
               <div className="online_user_item">
                 <AccountCircleIcon
@@ -85,7 +85,7 @@ const ChatScreen = () => {
                     marginLeft: width < 480 ? "30px" : "50px",
                   }}
                 />
-                <p>Shella</p>
+                <p>Mark</p>
               </div>
             </div>
           </div>
@@ -98,7 +98,7 @@ const ChatScreen = () => {
               src={Menu}
               alt="menu"
               onClick={sideBarVisibilityHandler}
-              style={{ height: "30px", marginLeft: "10px" }}
+              style={{ height: "30px" }}
             />
           )}
           <div
