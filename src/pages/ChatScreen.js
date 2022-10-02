@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Options from "../components/options";
+import ChatBubble from "../components/chatBubble";
 import useWindowDimensions from "../utils/useWindowsDimensions";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
@@ -137,7 +138,9 @@ const ChatScreen = () => {
             )}
           </div>
         </div>
-        <div className="chat"></div>
+        <div className="chat">
+          <ChatBubble/>
+        </div>
         <div className="chat_input">
           <input
             type="text"
