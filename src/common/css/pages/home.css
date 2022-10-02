@@ -20,7 +20,7 @@
     flex-direction: column;
 }
 
-.logoContainer {
+.homeContainer.logoContainer {
     height: 283px;
     width: 314px;
 }

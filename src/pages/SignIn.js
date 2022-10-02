@@ -16,8 +16,11 @@ const SignIn = () => {
             <Input type="text" name="username" placeholder="Username" />
             <Input type="password" name="password" placeholder="Password" />
           </div>
-          <Button title="Login" type="primary" width="650px" />
-          <p style={{marginTop: '30px'}}>
+          <div className="button">
+            <Button title="Login" type="primary" width="6000px" />
+          </div>
+
+          <p style={{ marginTop: "30px" }}>
             Or{" "}
             <Link to="/sign-up">
               <span>create an account</span>

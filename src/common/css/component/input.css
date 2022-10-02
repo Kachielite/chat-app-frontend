@@ -14,10 +14,10 @@ input {
     outline: none;
 }
 
-
-/* @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
     input {
-        height: 72px;
+        height: 56px;
         width: 332px;
+        font-size: 20px;
     }
-} */
+}
