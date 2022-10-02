@@ -16,10 +16,10 @@ const Home = () => {
         <p>Keeping Communication alive</p>
         <div className="buttonContainer">
           <Link to="/sign-in">
-            <Button title="Login" type="primary" width={width < 480 ? "332px":"550px"} />
+            <Button title="Login" buttonType="primary" width={width < 480 ? "332px":"550px"} />
           </Link>
           <Link to="/sign-up">
-            <Button title="Sign Up" type="secondary" width={width < 480 ? "332px":"550px"}  />
+            <Button title="Sign Up" buttonType="secondary" width={width < 480 ? "332px":"550px"}  />
           </Link>
         </div>
       </div>

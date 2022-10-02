@@ -39,7 +39,6 @@ const ChatScreen = () => {
     setSideBarVisibility(false);
   };
 
-  
 
   return (
     <div className="chat_screen_container">

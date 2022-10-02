@@ -1,0 +1,35 @@
+.error_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 20px;
+    z-index: 1000;
+    max-width: 60%;
+    background-color: rgb(237, 32, 32);
+    color: white;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.error_container p {
+    color: white;
+    font-family: 'Poppins Regular';
+    font-size: 20px;
+}
+
+.error_close {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+    .error_container {
+        max-width: 90%;
+        padding: 8px;
+    }
+}

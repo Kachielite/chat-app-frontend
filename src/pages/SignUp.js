@@ -18,7 +18,7 @@ const SignUp = () => {
             <Input type="password" name="password" placeholder="Password" />
           </div>
           <div className="button">
-            <Button title="Create Account" type="primary" width="100%" />
+            <Button title="Create Account" buttonType="primary" width="100%" />
           </div>
           <p>
             Already have an account?{" "}
