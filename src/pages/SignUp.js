@@ -17,7 +17,9 @@ const SignUp = () => {
             <Input type="text" name="username" placeholder="Username" />
             <Input type="password" name="password" placeholder="Password" />
           </div>
-          <Button title="Create Account" type="primary" width="100%" />
+          <div className="button">
+            <Button title="Create Account" type="primary" width="100%" />
+          </div>
           <p>
             Already have an account?{" "}
             <Link to="/sign-in">
