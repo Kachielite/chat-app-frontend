@@ -2,9 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import Logo from "../common/images/logo.svg";
+import useWindowDimensions from "../utils/useWindowsDimensions";
 import "../common/css/pages/home.css";
 
 const Home = () => {
+  const { width } = useWindowDimensions();
   return (
     <div className="container">
       <div className="homeContainer">
@@ -14,10 +16,10 @@ const Home = () => {
         <p>Keeping Communication alive</p>
         <div className="buttonContainer">
           <Link to="/sign-in">
-            <Button title="Login" type="primary" width="610px" />
+            <Button title="Login" type="primary" width={width < 480 ? "332px":"550px"} />
           </Link>
           <Link to="/sign-up">
-            <Button title="Sign Up" type="secondary" width="610px" />
+            <Button title="Sign Up" type="secondary" width={width < 480 ? "332px":"550px"}  />
           </Link>
         </div>
       </div>

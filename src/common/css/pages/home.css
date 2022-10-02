@@ -4,6 +4,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow-y: auto;
 }
 
 .homeContainer {
@@ -25,7 +26,7 @@
 }
 
 p {
-    font-family: 'Poppins';
+    font-family: 'Poppins Regular';
     font-size: 36px;
     color: #27476E;
 }
@@ -33,4 +34,29 @@ p {
 .buttonContainer {
     justify-content: space-between;
     height: 210px;
+}
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+    .container {
+        height: 100%;
+        max-width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .homeContainer {
+        height: 100%;
+        width: 100%;
+    }
+    .logoContainer img {
+        margin-top: 75px;
+        height: 165px;
+        width: 185px;
+    }
+    p {
+        font-size: 20px;
+    }
+    .buttonContainer {
+        height: 170px;
+    }
 }

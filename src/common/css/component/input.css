@@ -13,3 +13,11 @@ input {
     padding: 7px 30px;
     outline: none;
 }
+
+
+/* @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+    input {
+        height: 72px;
+        width: 332px;
+    }
+} */
