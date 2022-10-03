@@ -33,7 +33,7 @@ const SignUp = () => {
     setShowError(false);
   };
 
-  console.log(userInput);
+
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
@@ -53,7 +53,7 @@ const SignUp = () => {
     } else {
       setLoading(true);
       try {
-        const response = await axios.post(
+        await axios.post(
           "http://192.168.1.153:8080/api/v1/register",
           userInput
         );
@@ -67,12 +67,11 @@ const SignUp = () => {
         } else {
           setError(error.response.data.message);
         }
-        console.log(typeof error.response.data.error_details);
       }
     }
   };
 
-  console.log(error);
+
 
   return (
     <>

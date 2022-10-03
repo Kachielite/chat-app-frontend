@@ -11,8 +11,6 @@ import "../common/css/component/input.css";
 const SignIn = () => {
   const navigate = useNavigate();
   const [userInput, setUserInput] = useState({});
-  const [userId, setUserId] = useState("");
-  const [token, setToken] = useState("");
   const [error, setError] = useState("");
   const [showError, setShowError] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -31,32 +29,37 @@ const SignIn = () => {
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
-    setLoading(true)
+    setLoading(true);
     setShowError(false);
     if (userInput.username.length === 0) {
-      setLoading(false)
+      setLoading(false);
       setError("Username is required");
       setShowError(true);
       return;
     } else if (userInput.password.length === 0) {
-      setLoading(false)
+      setLoading(false);
       setError("Password is required");
       setShowError(true);
       return;
     } else {
     }
 
-    let response;
-
     try {
-      response = await axios.post(
+      const response = await axios.post(
         "http://192.168.1.153:8080/api/v1/sign-in",
         userInput
       );
-      setLoading(false)
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('userId', response.data.user);
+      const remainingMilliseconds = 60 * 60 * 1000;
+      const expiryDate = new Date(
+        new Date().getTime() + remainingMilliseconds
+      );
+      localStorage.setItem('expiryDate', expiryDate.toISOString());
+      setLoading(false);
       navigate("/chat");
     } catch (error) {
-      setLoading(false)
+      setLoading(false);
       setShowError(true);
       setError(error.response.data.message);
       console.log(error.response.data);
@@ -67,16 +70,16 @@ const SignIn = () => {
     <>
       {loading ? (
         <div className="container">
-        <BallTriangle
-          height={100}
-          width={100}
-          radius={5}
-          color="#1162E0"
-          ariaLabel="ball-triangle-loading"
-          wrapperClass={{}}
-          wrapperStyle=""
-          visible={true}
-        />
+          <BallTriangle
+            height={100}
+            width={100}
+            radius={5}
+            color="#1162E0"
+            ariaLabel="ball-triangle-loading"
+            wrapperClass={{}}
+            wrapperStyle=""
+            visible={true}
+          />
         </div>
       ) : (
         <div className="container">

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import Options from "../components/options";
 import ChatBubble from "../components/chatBubble";
 import useWindowDimensions from "../utils/useWindowsDimensions";
@@ -11,10 +12,17 @@ import ChatLogo from "../common/images/chatLogo.svg";
 import Menu from "../common/images/menusvg.svg";
 import "../common/css/pages/chat.css";
 
+//Store
+import { useSelector, useDispatch } from "react-redux";
+import { checkAuthentication } from "../store/slices/authSlice";
+
 const ChatScreen = () => {
+  const dispatch = useDispatch();
+  const auth = useSelector(state => state.auth.auth)
   const [sideBarVisibility, setSideBarVisibility] = useState(false);
   const [settingsVisibility, setSettingsVisibility] = useState(false);
   const [closeOptions, setCloseOptions] = useState(false);
+  const [users, setUsers] = useState({});
   const { width } = useWindowDimensions();
 
   const closeOptionsHandler = () => {
@@ -39,6 +47,21 @@ const ChatScreen = () => {
     setSideBarVisibility(false);
   };
 
+  useEffect(() => {
+    dispatch(checkAuthentication())
+    console.log(auth)
+    const token = localStorage.getItem("token");
+    axios
+      .get("http://localhost:8080/api/v1/users", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        setUsers(response.data.users);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [dispatch, auth]);
 
   return (
     <div className="chat_screen_container">
@@ -57,36 +80,20 @@ const ChatScreen = () => {
           </div>
           <div className="online_users_container">
             <div className="online_user">
-              <div className="online_user_item">
-                <AccountCircleIcon
-                  sx={{
-                    fontSize: width < 480 ? "30px" : "50px",
-                    marginRight: width < 480 ? "30px" : "50px",
-                    marginLeft: width < 480 ? "30px" : "50px",
-                  }}
-                />
-                <p>Shella</p>
-              </div>
-              <div className="online_user_item">
-                <AccountCircleIcon
-                  sx={{
-                    fontSize: width < 480 ? "30px" : "50px",
-                    marginRight: width < 480 ? "30px" : "50px",
-                    marginLeft: width < 480 ? "30px" : "50px",
-                  }}
-                />
-                <p>Jane</p>
-              </div>
-              <div className="online_user_item">
-                <AccountCircleIcon
-                  sx={{
-                    fontSize: width < 480 ? "30px" : "50px",
-                    marginRight: width < 480 ? "30px" : "50px",
-                    marginLeft: width < 480 ? "30px" : "50px",
-                  }}
-                />
-                <p>Mark</p>
-              </div>
+              {false && users?.map((user, index) => {
+                return (
+                  <div className="online_user_item">
+                    <AccountCircleIcon
+                      sx={{
+                        fontSize: width < 480 ? "30px" : "50px",
+                        marginRight: width < 480 ? "30px" : "50px",
+                        marginLeft: width < 480 ? "30px" : "50px",
+                      }}
+                    />
+                    <p>{user.username}</p>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -138,7 +145,7 @@ const ChatScreen = () => {
           </div>
         </div>
         <div className="chat">
-          <ChatBubble/>
+          <ChatBubble />
         </div>
         <div className="chat_input">
           <input
