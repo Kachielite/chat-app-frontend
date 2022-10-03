@@ -1,11 +1,18 @@
 import { Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setAuth } from "../store/slices/authSlice";
 
 export const ProtectedRoute = ({ children }) => {
-  const auth = useSelector((state) => state.auth.auth);
-  if (!auth) {
-    // user is not authenticated
+  const dispatch = useDispatch();
+  let token = localStorage.getItem("token");
+  let userId = localStorage.getItem("userId");
+  let expiryDate = localStorage.getItem("expiryDate");
+
+  if (!userId && !token && expiryDate <= new Date()) {
+    dispatch(setAuth(false));
     return <Navigate to="/sign-in" />;
+  } else {
+    dispatch(setAuth(true));
+    return children;
   }
-  return children;
 };

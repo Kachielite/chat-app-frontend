@@ -8,7 +8,12 @@ import signInLogo from "../common/images/signInLogo.svg";
 import "../common/css/pages/signin.css";
 import "../common/css/component/input.css";
 
+//store
+import { useDispatch } from 'react-redux';
+import { setAuth } from "../store/slices/authSlice";
+
 const SignIn = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate();
   const [userInput, setUserInput] = useState({});
   const [error, setError] = useState("");
@@ -51,11 +56,11 @@ const SignIn = () => {
       );
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('userId', response.data.user);
-      const remainingMilliseconds = 60 * 60 * 1000;
-      const expiryDate = new Date(
-        new Date().getTime() + remainingMilliseconds
-      );
+      const timeToExpire = 60 * 60 * 1000;
+      const currentTime = new Date().getTime()
+      const expiryDate = new Date(currentTime + timeToExpire)
       localStorage.setItem('expiryDate', expiryDate.toISOString());
+      dispatch(setAuth(true))
       setLoading(false);
       navigate("/chat");
     } catch (error) {

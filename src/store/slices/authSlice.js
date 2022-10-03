@@ -6,22 +6,14 @@ export const authSlice = createSlice({
     auth: false,
   },
   reducers: {
-    checkAuthentication: (state) => {
-      let token = localStorage.getItem("token");
-      let userId = localStorage.getItem("userId");
-      let expiryDate = localStorage.getItem("expiryDate");
-      if (!userId || !token) {
-        state.auth = false;
-      } else if (new Date(expiryDate) <= new Date()) {
-        state.auth = false;
-      } else {
-        state.auth = true;
-      }
+    setAuth:(state, action) => {
+        state.auth = action.payload
     },
+
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { checkAuthentication } = authSlice.actions;
+export const {setAuth } = authSlice.actions;
 
 export default authSlice.reducer;

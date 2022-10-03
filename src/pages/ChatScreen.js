@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setAuth } from "../store/slices/authSlice";
 import axios from "axios";
 import Options from "../components/options";
 import ChatBubble from "../components/chatBubble";
@@ -12,13 +15,9 @@ import ChatLogo from "../common/images/chatLogo.svg";
 import Menu from "../common/images/menusvg.svg";
 import "../common/css/pages/chat.css";
 
-//Store
-import { useSelector, useDispatch } from "react-redux";
-import { checkAuthentication } from "../store/slices/authSlice";
-
 const ChatScreen = () => {
   const dispatch = useDispatch();
-  const auth = useSelector(state => state.auth.auth)
+  const navigate = useNavigate()
   const [sideBarVisibility, setSideBarVisibility] = useState(false);
   const [settingsVisibility, setSettingsVisibility] = useState(false);
   const [closeOptions, setCloseOptions] = useState(false);
@@ -47,10 +46,16 @@ const ChatScreen = () => {
     setSideBarVisibility(false);
   };
 
+  const logOutHandler = () =>{
+    dispatch(setAuth(false))
+    localStorage.removeItem('token');
+    localStorage.removeItem('expiryDate');
+    localStorage.removeItem('userId');
+    navigate('/sign-in')
+  }
+
   useEffect(() => {
-    dispatch(checkAuthentication())
-    console.log(auth)
-    const token = localStorage.getItem("token");
+    let token = localStorage.getItem("token");
     axios
       .get("http://localhost:8080/api/v1/users", {
         headers: { Authorization: `Bearer ${token}` },
@@ -61,7 +66,7 @@ const ChatScreen = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [dispatch, auth]);
+  },[]);
 
   return (
     <div className="chat_screen_container">
@@ -80,20 +85,21 @@ const ChatScreen = () => {
           </div>
           <div className="online_users_container">
             <div className="online_user">
-              {false && users?.map((user, index) => {
-                return (
-                  <div className="online_user_item">
-                    <AccountCircleIcon
-                      sx={{
-                        fontSize: width < 480 ? "30px" : "50px",
-                        marginRight: width < 480 ? "30px" : "50px",
-                        marginLeft: width < 480 ? "30px" : "50px",
-                      }}
-                    />
-                    <p>{user.username}</p>
-                  </div>
-                );
-              })}
+              {false &&
+                users?.map((user, index) => {
+                  return (
+                    <div className="online_user_item">
+                      <AccountCircleIcon
+                        sx={{
+                          fontSize: width < 480 ? "30px" : "50px",
+                          marginRight: width < 480 ? "30px" : "50px",
+                          marginLeft: width < 480 ? "30px" : "50px",
+                        }}
+                      />
+                      <p>{user.username}</p>
+                    </div>
+                  );
+                })}
             </div>
           </div>
         </div>
@@ -134,7 +140,7 @@ const ChatScreen = () => {
                   />
                   <p>Setting</p>
                 </div>
-                <div className="settings_item">
+                <div className="settings_item" onClick={logOutHandler}>
                   <LogoutOutlinedIcon
                     sx={{ fontSize: width < 480 ? "20px" : "30px" }}
                   />
