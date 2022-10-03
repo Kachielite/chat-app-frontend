@@ -10,7 +10,8 @@ import "../common/css/component/input.css";
 
 //store
 import { useDispatch } from 'react-redux';
-import { setAuth } from "../store/slices/authSlice";
+import { setAuth, setTimeToExpire } from "../store/slices/authSlice";
+import Notification from "../components/notification";
 
 const SignIn = () => {
   const dispatch = useDispatch()
@@ -61,6 +62,7 @@ const SignIn = () => {
       const expiryDate = new Date(currentTime + timeToExpire)
       localStorage.setItem('expiryDate', expiryDate.toISOString());
       dispatch(setAuth(true))
+      dispatch(setTimeToExpire(60000))
       setLoading(false);
       navigate("/chat");
     } catch (error) {
@@ -93,6 +95,7 @@ const SignIn = () => {
             showErrorHandler={showErrorHandler}
             showError={showError}
           />
+          <Notification/>
           <div className="signInContainer">
             <div className="logoContainer">
               <img src={signInLogo} alt="sign in logo" />

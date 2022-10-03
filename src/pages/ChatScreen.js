@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setAuth } from "../store/slices/authSlice";
+import { setMessage, setShowInfo } from "../store/slices/notificationSlice";
 import axios from "axios";
 import Options from "../components/options";
 import ChatBubble from "../components/chatBubble";
@@ -17,7 +18,8 @@ import "../common/css/pages/chat.css";
 
 const ChatScreen = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const timeToExpire = useSelector((state) => state.auth.timeToExpire);
   const [sideBarVisibility, setSideBarVisibility] = useState(false);
   const [settingsVisibility, setSettingsVisibility] = useState(false);
   const [closeOptions, setCloseOptions] = useState(false);
@@ -46,13 +48,13 @@ const ChatScreen = () => {
     setSideBarVisibility(false);
   };
 
-  const logOutHandler = () =>{
-    dispatch(setAuth(false))
-    localStorage.removeItem('token');
-    localStorage.removeItem('expiryDate');
-    localStorage.removeItem('userId');
-    navigate('/sign-in')
-  }
+  const logOutHandler = () => {
+    dispatch(setAuth(false));
+    localStorage.removeItem("token");
+    localStorage.removeItem("expiryDate");
+    localStorage.removeItem("userId");
+    navigate("/sign-in");
+  };
 
   useEffect(() => {
     let token = localStorage.getItem("token");
@@ -66,7 +68,14 @@ const ChatScreen = () => {
       .catch((err) => {
         console.log(err);
       });
-  },[]);
+  }, []);
+
+  useEffect(() => {
+    const autoLogOut = setTimeout(logOutHandler, timeToExpire);
+    dispatch(setShowInfo(true))
+    dispatch(setMessage("Session has expired. Please login again"));
+    return () => clearTimeout(autoLogOut);
+  });
 
   return (
     <div className="chat_screen_container">
