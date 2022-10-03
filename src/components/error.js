@@ -6,9 +6,9 @@ const Error = ({ message, showError, showErrorHandler }) => {
     <>
       {showError && (
         <div className="error_container">
-          <p>{message}</p>
+          <p>Error: {message}</p>
           <div onClick={showErrorHandler} className="error_close">
-            <CloseIcon />
+            <CloseIcon sx={{fontWeight:"800"}} />
           </div>
         </div>
       )}
