@@ -6,6 +6,7 @@ import { BallTriangle } from "react-loader-spinner";
 import Button from "../components/Button";
 import signInLogo from "../common/images/signInLogo.svg";
 import "../common/css/pages/signin.css";
+import "../common/css/component/input.css";
 
 const SignIn = () => {
   const navigate = useNavigate();

@@ -11,7 +11,6 @@ const Button = (props) => {
       autoComplete="off"
       onChange={userInputHandler}
       required
-      style={{border: '4px solid rgb(237, 32, 32)'}}
     />
   );
 };
