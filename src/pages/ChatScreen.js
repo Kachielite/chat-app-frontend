@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setAuth } from "../store/slices/authSlice";
 import { setMessage, setShowInfo } from "../store/slices/notificationSlice";
 import axios from "axios";
+import io from 'socket.io-client';
 import Options from "../components/options";
 import ChatBubble from "../components/chatBubble";
 import useWindowDimensions from "../utils/useWindowsDimensions";
@@ -16,7 +17,10 @@ import ChatLogo from "../common/images/chatLogo.svg";
 import Menu from "../common/images/menusvg.svg";
 import "../common/css/pages/chat.css";
 
+const socket = io('http://172.20.10.4:8080');
+
 const ChatScreen = () => {
+  const IP = "172.20.10.4";
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const timeToExpire = useSelector((state) => state.auth.timeToExpire);
@@ -24,7 +28,14 @@ const ChatScreen = () => {
   const [settingsVisibility, setSettingsVisibility] = useState(false);
   const [closeOptions, setCloseOptions] = useState(false);
   const [users, setUsers] = useState({});
+  const [chat, setChat] = useState({ message: "", userId: "" });
+  const [messages, setMessages] = useState();
+  const [isConnected, setIsConnected] = useState(socket.connected);
   const { width } = useWindowDimensions();
+  const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
+  const messageEl = useRef(null);
+
 
   const closeOptionsHandler = () => {
     setCloseOptions(true);
@@ -56,10 +67,52 @@ const ChatScreen = () => {
     navigate("/sign-in");
   };
 
-  useEffect(() => {
-    let token = localStorage.getItem("token");
+  const chatOnChangeHandler = (event) => {
+    setChat({ ...chat, message: event.target.value });
+  };
+
+  const postChatHandler = async () => {
+    if (chat.message.length === 0) {
+      return;
+    }
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    const data = { ...chat, userId: userId };
     axios
-      .get("http://localhost:8080/api/v1/users", {
+      .post(`http://${IP}:8080/api/v1/post-chat`, 
+        data,
+        config,
+      )
+      .then((response) => {
+        setChat({...chat, message:''})
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  
+
+
+  useEffect(() => {
+    socket.on('connect', () => {
+      setIsConnected(true);
+    });
+
+    socket.on('disconnect', () => {
+      setIsConnected(false);
+    });
+
+    return () => {
+      socket.off('connect');
+      socket.off('disconnect');
+    };
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(`http://${IP}:8080/api/v1/users`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -68,12 +121,38 @@ const ChatScreen = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [token]);
 
   useEffect(() => {
-    const autoLogOut = setTimeout(logOutHandler, timeToExpire);
-    dispatch(setShowInfo(true))
+    axios
+      .get(`http://${IP}:8080/api/v1/get-chats`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        setMessages(response.data.chats);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+  }, [token, messages]);
+
+
+  useEffect(() => {
+    if (messageEl) {
+      messageEl.current.addEventListener('DOMNodeInserted', event => {
+        const { currentTarget: target } = event;
+        target.scroll({ top: target.scrollHeight, behavior: 'smooth' });
+      });
+    }
+  }, [])
+
+
+  useEffect(() => {
+    dispatch(setShowInfo(true));
     dispatch(setMessage("Session has expired. Please login again"));
+    const autoLogOut = setTimeout(logOutHandler, timeToExpire);
+
     return () => clearTimeout(autoLogOut);
   });
 
@@ -94,8 +173,8 @@ const ChatScreen = () => {
           </div>
           <div className="online_users_container">
             <div className="online_user">
-              {false &&
-                users?.map((user, index) => {
+              {
+                false && users?.map((user, index) => {
                   return (
                     <div className="online_user_item">
                       <AccountCircleIcon
@@ -159,16 +238,19 @@ const ChatScreen = () => {
             )}
           </div>
         </div>
-        <div className="chat">
-          <ChatBubble />
+        <div className="chat" ref={messageEl}>
+          <ChatBubble messages={messages}/>
+
         </div>
         <div className="chat_input">
           <input
             type="text"
             name="chat"
             placeholder=" Type your message here..."
+            onChange={chatOnChangeHandler}
+            value={chat.message}
           />
-          <div className="button">
+          <div className="button" onClick={postChatHandler}>
             <SendIcon sx={{ fontSize: width < 480 ? "30px" : "50px" }} />
           </div>
         </div>

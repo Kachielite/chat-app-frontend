@@ -9,6 +9,7 @@ import "../common/css/pages/signup.css";
 import "../common/css/component/input.css";
 
 const SignUp = () => {
+  const IP = '172.20.10.4'
   const navigate = useNavigate();
   const [userInput, setUserInput] = useState({
     name: "",
@@ -54,7 +55,7 @@ const SignUp = () => {
       setLoading(true);
       try {
         await axios.post(
-          "http://192.168.1.153:8080/api/v1/register",
+          `http://${IP}:8080/api/v1/register`,
           userInput
         );
         setLoading(false);

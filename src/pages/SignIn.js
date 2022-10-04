@@ -9,12 +9,13 @@ import "../common/css/pages/signin.css";
 import "../common/css/component/input.css";
 
 //store
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import { setAuth, setTimeToExpire } from "../store/slices/authSlice";
 import Notification from "../components/notification";
 
 const SignIn = () => {
-  const dispatch = useDispatch()
+  const IP = '172.20.10.4'
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [userInput, setUserInput] = useState({});
   const [error, setError] = useState("");
@@ -35,41 +36,38 @@ const SignIn = () => {
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
-    setLoading(true);
     setShowError(false);
     if (userInput.username.length === 0) {
-      setLoading(false);
       setError("Username is required");
       setShowError(true);
       return;
     } else if (userInput.password.length === 0) {
-      setLoading(false);
       setError("Password is required");
       setShowError(true);
       return;
     } else {
-    }
-
-    try {
-      const response = await axios.post(
-        "http://192.168.1.153:8080/api/v1/sign-in",
-        userInput
-      );
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('userId', response.data.user);
-      const timeToExpire = 60 * 60 * 1000;
-      const currentTime = new Date().getTime()
-      const expiryDate = new Date(currentTime + timeToExpire)
-      localStorage.setItem('expiryDate', expiryDate.toISOString());
-      dispatch(setAuth(true))
-      dispatch(setTimeToExpire(60000))
-      setLoading(false);
-      navigate("/chat");
-    } catch (error) {
-      setLoading(false);
-      setShowError(true);
-      setError(error.response.data.message);
-      console.log(error.response.data);
+      setLoading(true);
+      try {
+        const response = await axios.post(
+          `http://${IP}:8080/api/v1/sign-in`,
+          userInput
+        );
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("userId", response.data.user);
+        const timeToExpire = 60 * 60 * 10000;
+        const currentTime = new Date().getTime();
+        const expiryDate = new Date(currentTime + timeToExpire);
+        localStorage.setItem("expiryDate", expiryDate.toISOString());
+        dispatch(setAuth(true));
+        dispatch(setTimeToExpire(timeToExpire));
+        setLoading(false);
+        navigate("/chat");
+      } catch (error) {
+        setLoading(false);
+        setShowError(true);
+        setError(error.response.data.message);
+        console.log(error.response.data);
+      }
     }
   };
 
@@ -95,7 +93,7 @@ const SignIn = () => {
             showErrorHandler={showErrorHandler}
             showError={showError}
           />
-          <Notification/>
+          <Notification />
           <div className="signInContainer">
             <div className="logoContainer">
               <img src={signInLogo} alt="sign in logo" />
