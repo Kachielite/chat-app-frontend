@@ -28,15 +28,29 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    overflow: hidden;
+}
+
+.profile_photo_container img {
+    display: block;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-top: 45px;
 }
 
 .edit_button {
     position: relative;
     background-color: #1162E0;
-    bottom: 65px;
-    right: -10px;
+    bottom: 40px;
+    right: 0px;
     border-radius: 35px;
     padding: 8px;
+    border: 1px solid #FFFFFF;
+    color: #FFFFFF;
+    width: 60px;
+    height: 60px;
 }
 
 .options_container form {
@@ -75,7 +89,7 @@
 }
 
 .options_container form button {
-    width: 220px;
+    width: 180px;
     height: 50px;
     border: none;
     font-family: 'Poppins Medium';
@@ -84,6 +98,9 @@
     font-size: 18px;
     color: #001D4A;
     border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
@@ -98,8 +115,11 @@
         overflow-x: scroll;
     }
     .edit_button {
-        bottom: 65px;
-        right: -10px;
+        bottom: 38px;
+        right: 0px;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
     }
     .options_container form {
         height: 373px;

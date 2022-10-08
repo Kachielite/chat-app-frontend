@@ -50,6 +50,7 @@
 .chat_section {
     height: 100%;
     width: 82%;
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

@@ -14,7 +14,7 @@ import { setAuth, setTimeToExpire } from "../store/slices/authSlice";
 import Notification from "../components/notification";
 
 const SignIn = () => {
-  const IP = '172.20.10.4'
+  const IP = '192.168.1.153'
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [userInput, setUserInput] = useState({});

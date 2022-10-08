@@ -9,7 +9,7 @@ import "../common/css/pages/signup.css";
 import "../common/css/component/input.css";
 
 const SignUp = () => {
-  const IP = '172.20.10.4'
+  const IP = '192.168.1.153'
   const navigate = useNavigate();
   const [userInput, setUserInput] = useState({
     name: "",
