@@ -1,7 +1,9 @@
+
 import "../common/css/component/chatBubble.css";
 
 const ChatBubble = ({ messages }) => {
-  const userId = localStorage.getItem("userId");
+  const user = localStorage.getItem("user");
+  const userId = JSON.parse(user).userId
 
   return (
     <>
@@ -16,6 +18,7 @@ const ChatBubble = ({ messages }) => {
             </p>
           );
         })}
+        
       </div>
     </>
   );

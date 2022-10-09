@@ -3,20 +3,26 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setAuth } from "../store/slices/authSlice";
 import { setMessage, setShowInfo } from "../store/slices/notificationSlice";
-import { setShowInAppToast, setToastMessage } from "../store/slices/inChatNotificationSlice";
+import {
+  setShowInAppToast,
+  setToastMessage,
+} from "../store/slices/inChatNotificationSlice";
 import axios from "axios";
 import io from "socket.io-client";
 import Options from "../components/options";
 import ChatBubble from "../components/chatBubble";
 import InChatNotification from "../components/inChatNotification";
+import Avatar from "@mui/material/Avatar";
 import useWindowDimensions from "../utils/useWindowsDimensions";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
+import { Comment } from "react-loader-spinner";
+// import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import ChatLogo from "../common/images/chatLogo.svg";
-import { getUserDetails } from "../store/slices/userSlice";
+import { setOnlineUser } from "../store/slices/userSlice";
 import Menu from "../common/images/menusvg.svg";
 import "../common/css/pages/chat.css";
 
@@ -27,16 +33,16 @@ const ChatScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const timeToExpire = useSelector((state) => state.auth.timeToExpire);
-  const userDetails = useSelector((state) => state.user.userInfo);
+  const onlineUsers = useSelector((state) => state.user.onlineUsers);
   const [sideBarVisibility, setSideBarVisibility] = useState(false);
   const [settingsVisibility, setSettingsVisibility] = useState(false);
   const [closeOptions, setCloseOptions] = useState(false);
-  const [users, setUsers] = useState({});
   const [chat, setChat] = useState({ message: "", userId: "" });
   const [messages, setMessages] = useState();
-  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [isTyping, setIsTyping] = useState(false);
+  const [userTyping, setUserTying] = useState("");
   const { width } = useWindowDimensions();
-  const userId = localStorage.getItem("userId");
+  const user = localStorage.getItem("user");
   const token = localStorage.getItem("token");
   const messageEl = useRef(null);
 
@@ -62,17 +68,32 @@ const ChatScreen = () => {
     setSideBarVisibility(false);
   };
 
-  const logOutHandler = () => {
-    dispatch(setAuth(false));
-    localStorage.removeItem("token");
-    localStorage.removeItem("expiryDate");
-    localStorage.removeItem("userId");
-    navigate("/sign-in");
-    socket.emit("left", userDetails.username);
+  const logOutHandler = async () => {
+    try {
+      //Get All Online Users
+      const response = await axios.get(`http://${IP}:8080/api/v1/users`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      dispatch(setOnlineUser(response.data.users));
+      try {
+        //Tell the server that the user has left the chatroom
+        socket.emit("left", JSON.parse(user));
+        dispatch(setAuth(false));
+        localStorage.removeItem("token");
+        localStorage.removeItem("expiryDate");
+        localStorage.removeItem("user");
+        navigate("/sign-in");
+      } catch (error) {
+        console.log(error);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const chatOnChangeHandler = (event) => {
     setChat({ ...chat, message: event.target.value });
+    socket.emit("typing", JSON.parse(user));
   };
 
   const postChatHandler = async () => {
@@ -82,7 +103,7 @@ const ChatScreen = () => {
     const config = {
       headers: { Authorization: `Bearer ${token}` },
     };
-    const data = { ...chat, userId: userId };
+    const data = { ...chat, userId: user.userId };
     axios
       .post(`http://${IP}:8080/api/v1/post-chat`, data, config)
       .then((response) => {
@@ -94,34 +115,38 @@ const ChatScreen = () => {
   };
 
   useEffect(() => {
-    socket.on("connect", () => {
-      setIsConnected(true);
-    });
+    socket.on("connect", () => {});
 
-    socket.on("disconnect", () => {
-      
-    });
+    socket.on("disconnect", () => {});
     //The socket is a module that exports the actual socket.io socket
     socket.on("new chat", (data) => {
+      console.log(data)
       setMessages((prevMessages) => [...prevMessages, data]);
     });
 
-    socket.on("message", (data) => {
+    socket.on("message", (user) => {
       dispatch(setShowInAppToast(true));
-      dispatch(setToastMessage(`${data} joined the chatrrom`));
+      dispatch(setToastMessage(`${user.username} joined the chatroom`));
       setTimeout(() => {
         dispatch(setShowInAppToast(false));
       }, 7000);
     });
 
-    socket.on("leftChatroom", (data) => {
+    socket.on("leftChatroom", (user) => {
       dispatch(setShowInAppToast(true));
-      dispatch(setToastMessage(`${data} left the chatroom`));
+      dispatch(setToastMessage(`${user.username} left the chatroom`));
       setTimeout(() => {
         dispatch(setShowInAppToast(false));
-      }, 7000);
+      }, 4000);
     });
 
+    socket.on("is-typing", (username) => {
+      setIsTyping(true);
+      setUserTying(username)
+      setTimeout(() => {
+        setIsTyping(false);
+      }, 7000);
+    });
 
     //Pull Messages window to the bottom to view the most recent message
     if (messageEl) {
@@ -137,22 +162,12 @@ const ChatScreen = () => {
       socket.off("disconnect");
       socket.off("new chat");
       socket.off("message");
-      socket.off("left chatroom");
+      socket.off("leftChatroom");
+      socket.off("is-typing");
     };
-  }, []);
+  }, [dispatch, token]);
 
   useEffect(() => {
-    //Get All users on the platform
-    axios
-      .get(`http://${IP}:8080/api/v1/users`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        setUsers(response.data.users);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
     //Get All Chats messages
     axios
       .get(`http://${IP}:8080/api/v1/get-chats`, {
@@ -164,24 +179,43 @@ const ChatScreen = () => {
       .catch((err) => {
         console.log(err);
       });
-    //Get User details
+    //Get All Online Users
     axios
-      .get(`http://${IP}:8080/api/v1/user/${userId}`, {
+      .get(`http://${IP}:8080/api/v1/users`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        dispatch(getUserDetails(response.data.user));
-        socket.emit("join", userDetails.username);
+        dispatch(setOnlineUser(response.data.users));
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [token, userId, dispatch, userDetails.username]);
+    //Notify the server that a new user has joined
+    socket.emit("join", JSON.parse(user));
+  }, [token, user, dispatch]);
 
   useEffect(() => {
-    const autoLogOut = setTimeout(logOutHandler, timeToExpire);
-    dispatch(setShowInfo(true));
-    dispatch(setMessage("Session has expired. Please login again"));
+    const logoutAction = () => {
+      dispatch(
+        setOnlineUser([
+          ...onlineUsers.filter(
+            (onlineUser) => onlineUser.username !== user.username
+          ),
+        ])
+      );
+      navigate("/sign-in");
+      //Tell the server that the user has left the chatroom
+      socket.emit("left", JSON.parse(user));
+      dispatch(setAuth(false));
+      localStorage.removeItem("token");
+      localStorage.removeItem("expiryDate");
+      localStorage.removeItem("user");
+    };
+    const autoLogOut = setTimeout(() => {
+      logoutAction();
+      dispatch(setShowInfo(true));
+      dispatch(setMessage("Session has expired. Please login again"));
+    }, timeToExpire);
 
     return () => clearTimeout(autoLogOut);
   });
@@ -189,7 +223,6 @@ const ChatScreen = () => {
   return (
     <>
       <div className="chat_screen_container">
-        
         {closeOptions && (
           <Options width={width} setCloseOptions={setCloseOptions} />
         )}
@@ -205,17 +238,30 @@ const ChatScreen = () => {
             </div>
             <div className="online_users_container">
               <div className="online_user">
-                {false &&
-                  users?.map((user, index) => {
+                {onlineUsers &&
+                  onlineUsers?.map((user, index) => {
                     return (
-                      <div className="online_user_item">
-                        <AccountCircleIcon
-                          sx={{
-                            fontSize: width < 480 ? "30px" : "50px",
-                            marginRight: width < 480 ? "30px" : "50px",
-                            marginLeft: width < 480 ? "30px" : "50px",
-                          }}
-                        />
+                      <div className="online_user_item" key={index}>
+                        {user.display_picture_url === "" ||
+                        !user.display_picture_url ? (
+                          <AccountCircleIcon
+                            sx={{
+                              fontSize: width < 480 ? "40px" : "50px",
+                              marginRight: width < 480 ? "20px" : "50px",
+                              marginLeft: width < 480 ? "30px" : "50px",
+                            }}
+                          />
+                        ) : (
+                          <Avatar
+                            alt={user.username}
+                            src={user.display_picture_url}
+                            sx={{
+                              fontSize: width < 480 ? "30px" : "50px",
+                              marginRight: width < 480 ? "20px" : "30px",
+                              marginLeft: width < 480 ? "30px" : "50px",
+                            }}
+                          />
+                        )}
                         <p>{user.username}</p>
                       </div>
                     );
@@ -225,7 +271,7 @@ const ChatScreen = () => {
           </div>
         )}
         <div className="chat_section">
-        <InChatNotification />
+          <InChatNotification />
           <div className="navbar">
             {width < 1024 && (
               <img
@@ -235,7 +281,9 @@ const ChatScreen = () => {
                 style={{ height: "30px" }}
               />
             )}
-            {/* <p>is typing</p> */}
+            {isTyping && <p id="isTyping" style={{ color: "white", fontSize: "15px", marginRight: width < 480 ? "" : "400px" }}>
+              {`${userTyping} is typing`}
+            </p>}
             <div
               className="settings_container"
               onClick={settingsVisibilityHandler}>

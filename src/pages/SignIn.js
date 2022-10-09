@@ -14,7 +14,7 @@ import { setAuth, setTimeToExpire } from "../store/slices/authSlice";
 import Notification from "../components/notification";
 
 const SignIn = () => {
-  const IP = '192.168.1.153'
+  const IP = "192.168.1.153";
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [userInput, setUserInput] = useState({});
@@ -53,15 +53,20 @@ const SignIn = () => {
           userInput
         );
         localStorage.setItem("token", response.data.token);
-        localStorage.setItem("userId", response.data.user);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
         const timeToExpire = 60 * 60 * 10000;
         const currentTime = new Date().getTime();
         const expiryDate = new Date(currentTime + timeToExpire);
         localStorage.setItem("expiryDate", expiryDate.toISOString());
-        dispatch(setAuth(true));
-        dispatch(setTimeToExpire(timeToExpire));
-        setLoading(false);
-        navigate("/chat");
+
+        try {
+          dispatch(setAuth(true));
+          dispatch(setTimeToExpire(timeToExpire));
+          setLoading(false);
+          navigate("/chat");
+        } catch (error) {
+          console.log(error);
+        }
       } catch (error) {
         setLoading(false);
         setShowError(true);
