@@ -19,7 +19,6 @@ import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
-import { Comment } from "react-loader-spinner";
 // import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import ChatLogo from "../common/images/chatLogo.svg";
 import { setOnlineUser } from "../store/slices/userSlice";
@@ -49,7 +48,7 @@ const ChatScreen = () => {
   const closeOptionsHandler = () => {
     setCloseOptions(true);
   };
-  console.log(JSON.parse(user))
+  console.log(JSON.parse(user));
   const sideBarVisibilityHandler = () => {
     if (!sideBarVisibility) {
       setSideBarVisibility(true);
@@ -120,7 +119,7 @@ const ChatScreen = () => {
     socket.on("disconnect", () => {});
     //The socket is a module that exports the actual socket.io socket
     socket.on("new chat", (data) => {
-      console.log(data)
+      console.log(data);
       setMessages((prevMessages) => [...prevMessages, data]);
     });
 
@@ -142,7 +141,7 @@ const ChatScreen = () => {
 
     socket.on("is-typing", (username) => {
       setIsTyping(true);
-      setUserTying(username)
+      setUserTying(username);
       setTimeout(() => {
         setIsTyping(false);
       }, 7000);
@@ -281,31 +280,43 @@ const ChatScreen = () => {
                 style={{ height: "30px" }}
               />
             )}
-            {isTyping && <p id="isTyping" style={{ color: "white", fontSize: "15px", marginRight: width < 480 ? "" : "400px" }}>
-              {`${userTyping} is typing`}
-            </p>}
+            {isTyping && (
+              <p
+                id="isTyping"
+                style={{
+                  color: "white",
+                  fontSize: "15px",
+                  marginRight: width < 480 ? "" : "400px",
+                }}>
+                {`${userTyping} is typing`}
+              </p>
+            )}
             <div
               className="settings_container"
               onClick={settingsVisibilityHandler}>
-              {JSON.parse(user).profile_photo ?
-              <img src={JSON.parse(user).profile_photo} alt="user_image" height={40} width={40} style={{borderRadius:"50%"}}/>
-              :<AccountCircleIcon
-                sx={{
-                  fontSize: width < 480 ? "40px" : "50px",
-                  marginRight: "20px",
-                }}
-              />}
+              {JSON.parse(user).profile_photo ? (
+                <img
+                  src={JSON.parse(user).profile_photo}
+                  alt="user_image"
+                  height={40}
+                  width={40}
+                  style={{ borderRadius: "50%" }}
+                />
+              ) : (
+                <AccountCircleIcon
+                  sx={{
+                    fontSize: width < 480 ? "40px" : "50px",
+                    marginRight: "20px",
+                  }}
+                />
+              )}
               <div className="settings_button">
-                <SettingsOutlinedIcon sx={{ fontSize: width < 480 ? "20px" : "25px" }}/>
+                <SettingsOutlinedIcon
+                  sx={{ fontSize: width < 480 ? "20px" : "25px" }}
+                />
               </div>
               {settingsVisibility && (
                 <div className="settings">
-                  {/* <div className="settings_item">
-                <PersonOutlineOutlinedIcon
-                  sx={{ fontSize: width < 480 ? "20px" : "30px" }}
-                />
-                <p>Profile</p>
-              </div> */}
                   <div className="settings_item" onClick={closeOptionsHandler}>
                     <SettingsOutlinedIcon
                       sx={{ fontSize: width < 480 ? "20px" : "30px" }}
