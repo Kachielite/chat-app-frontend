@@ -14,7 +14,7 @@ import { setAuth, setTimeToExpire } from "../store/slices/authSlice";
 import Notification from "../components/notification";
 
 const SignIn = () => {
-  const IP = "192.168.1.153";
+  const IP = "https://chat-app-18kl.onrender.com";
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [userInput, setUserInput] = useState({});
@@ -49,7 +49,7 @@ const SignIn = () => {
       setLoading(true);
       try {
         const response = await axios.post(
-          `http://${IP}:8080/api/v1/sign-in`,
+          `${IP}/api/v1/sign-in`,
           userInput
         );
         localStorage.setItem("token", response.data.token);

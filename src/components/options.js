@@ -10,7 +10,7 @@ import { BallTriangle } from "react-loader-spinner";
 import "../common/css/component/options.css";
 
 const Options = ({ width, setCloseOptions }) => {
-  const IP = "192.168.1.153";
+  const IP = "https://chat-app-18kl.onrender.com";
   const [loading, setLoading] = useState(false);
   const [passwordType, setPasswordType] = useState("password");
   const [confirmPasswordType, setConfirmPasswordType] = useState("password");
@@ -57,7 +57,7 @@ const Options = ({ width, setCloseOptions }) => {
     };
     const data = { ...user, profile_photo: filesContent[0]?.content };
     axios
-      .put(`http://${IP}:8080/api/v1/update-user-data`, data, config)
+      .put(`${IP}/api/v1/update-user-data`, data, config)
       .then((response) => {
         localStorage.setItem("user", JSON.stringify(user));
         setLoading(false)

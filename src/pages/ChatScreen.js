@@ -25,10 +25,10 @@ import { setOnlineUser } from "../store/slices/userSlice";
 import Menu from "../common/images/menusvg.svg";
 import "../common/css/pages/chat.css";
 
-const socket = io("http://192.168.1.153:8080");
+const socket = io("https://chat-app-18kl.onrender.com");
 
 const ChatScreen = () => {
-  const IP = "192.168.1.153";
+  const IP = "https://chat-app-18kl.onrender.com";
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const timeToExpire = useSelector((state) => state.auth.timeToExpire);
@@ -70,7 +70,7 @@ const ChatScreen = () => {
   const logOutHandler = async () => {
     try {
       //Get All Online Users
-      const response = await axios.get(`http://${IP}:8080/api/v1/users`, {
+      const response = await axios.get(`${IP}/api/v1/users`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       dispatch(setOnlineUser(response.data.users));
@@ -104,7 +104,7 @@ const ChatScreen = () => {
     };
     const data = { ...chat, userId: user.userId };
     axios
-      .post(`http://${IP}:8080/api/v1/post-chat`, data, config)
+      .post(`${IP}/api/v1/post-chat`, data, config)
       .then((response) => {
         setChat({ ...chat, message: "" });
       })
@@ -169,7 +169,7 @@ const ChatScreen = () => {
   useEffect(() => {
     //Get All Chats messages
     axios
-      .get(`http://${IP}:8080/api/v1/get-chats`, {
+      .get(`${IP}/api/v1/get-chats`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -180,7 +180,7 @@ const ChatScreen = () => {
       });
     //Get All Online Users
     axios
-      .get(`http://${IP}:8080/api/v1/users`, {
+      .get(`${IP}/api/v1/users`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {

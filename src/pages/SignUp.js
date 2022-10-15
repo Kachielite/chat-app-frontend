@@ -9,7 +9,7 @@ import "../common/css/pages/signup.css";
 import "../common/css/component/input.css";
 
 const SignUp = () => {
-  const IP = '192.168.1.153'
+  const IP = 'https://chat-app-18kl.onrender.com'
   const navigate = useNavigate();
   const [userInput, setUserInput] = useState({
     name: "",
@@ -55,7 +55,7 @@ const SignUp = () => {
       setLoading(true);
       try {
         await axios.post(
-          `http://${IP}:8080/api/v1/register`,
+          `${IP}/api/v1/register`,
           userInput
         );
         setLoading(false);
