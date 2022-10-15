@@ -48,7 +48,7 @@ const ChatScreen = () => {
   const closeOptionsHandler = () => {
     setCloseOptions(true);
   };
-  console.log(JSON.parse(user));
+
   const sideBarVisibilityHandler = () => {
     if (!sideBarVisibility) {
       setSideBarVisibility(true);
