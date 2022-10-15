@@ -19,7 +19,6 @@ import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
-// import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import ChatLogo from "../common/images/chatLogo.svg";
 import { setOnlineUser } from "../store/slices/userSlice";
 import Menu from "../common/images/menusvg.svg";
@@ -28,7 +27,7 @@ import "../common/css/pages/chat.css";
 const socket = io(`${process.env.REACT_APP_ENDPOINT}`);
 
 const ChatScreen = () => {
-  const IP = process.env.REACT_APP_ENDPOINT;
+  const IP = `${process.env.REACT_APP_ENDPOINT}`;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const timeToExpire = useSelector((state) => state.auth.timeToExpire);
