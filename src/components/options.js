@@ -10,7 +10,7 @@ import { BallTriangle } from "react-loader-spinner";
 import "../common/css/component/options.css";
 
 const Options = ({ width, setCloseOptions }) => {
-  const IP = "https://chat-app-18kl.onrender.com";
+  const IP = `${process.env.REACT_APP_ENDPOINT}`;
   const [loading, setLoading] = useState(false);
   const [passwordType, setPasswordType] = useState("password");
   const [confirmPasswordType, setConfirmPasswordType] = useState("password");

@@ -25,10 +25,10 @@ import { setOnlineUser } from "../store/slices/userSlice";
 import Menu from "../common/images/menusvg.svg";
 import "../common/css/pages/chat.css";
 
-const socket = io("https://chat-app-18kl.onrender.com");
+const socket = io(`${process.env.REACT_APP_ENDPOINT}`);
 
 const ChatScreen = () => {
-  const IP = "https://chat-app-18kl.onrender.com";
+  const IP = process.env.REACT_APP_ENDPOINT;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const timeToExpire = useSelector((state) => state.auth.timeToExpire);
@@ -191,7 +191,7 @@ const ChatScreen = () => {
       });
     //Notify the server that a new user has joined
     socket.emit("join", JSON.parse(user));
-  }, [token, user, dispatch]);
+  }, [token, user, dispatch,IP]);
 
   useEffect(() => {
     const logoutAction = () => {

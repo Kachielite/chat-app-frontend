@@ -9,7 +9,7 @@ import "../common/css/pages/signup.css";
 import "../common/css/component/input.css";
 
 const SignUp = () => {
-  const IP = 'https://chat-app-18kl.onrender.com'
+  const IP = `${process.env.REACT_APP_ENDPOINT}`
   const navigate = useNavigate();
   const [userInput, setUserInput] = useState({
     name: "",

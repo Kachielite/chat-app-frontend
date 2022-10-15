@@ -14,7 +14,7 @@ import { setAuth, setTimeToExpire } from "../store/slices/authSlice";
 import Notification from "../components/notification";
 
 const SignIn = () => {
-  const IP = "https://chat-app-18kl.onrender.com";
+  const IP = `${process.env.REACT_APP_ENDPOINT}`;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [userInput, setUserInput] = useState({});
