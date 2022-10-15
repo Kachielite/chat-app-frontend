@@ -94,10 +94,12 @@
 
 .settings_button {
     position: absolute;
-    top: 30px;
-    left: 30px;
+    top: 25px;
+    left: 20px;
     background-color: #1162E0;
     border-radius: 50%;
+    height: max-content;
+    width: max-content;
 }
 
 .navbar .settings_item p {
@@ -140,7 +142,7 @@
     align-items: center;
     padding-left: 17px;
     padding-right: 17px;
-    height: 15%;
+    height: 12%;
     width: 100%;
     background-color: #1162E0;
     border: 2px solid rgba(217, 217, 217, 0.23);
@@ -178,7 +180,6 @@
     .chat_screen_container {
         position: relative;
         width: 100vw;
-        height: 100vh;
     }
     .sidebar {
         position: absolute;
@@ -203,7 +204,7 @@
         justify-content: space-between;
         width: 100%;
         height: 8%;
-        padding-right: 2px;
+        padding-right: 4px;
     }
     .settings {
         width: 120px;
@@ -234,8 +235,11 @@
     .settings_item p {
         font-size: 15px;
     }
+    .settings_button {
+        top: 22px;
+        left: 23px;
+    }
     .chat {
-        height: 98%;
         width: 100%;
     }
     .chat_input {
@@ -245,7 +249,7 @@
         width: 100%;
     }
     .chat_input input {
-        height: 50px;
+        height: 47px;
         width: 85%;
         font-size: 15px;
         border: none;
@@ -282,6 +286,12 @@
         padding: 15px 1px;
         justify-content: flex-start;
     }
+    .navbar {
+        justify-content: space-between;
+        width: 100%;
+        height: 8%;
+        padding-right: 20px;
+    }
     .chat_section {
         width: 100vw;
         z-index: 1;
@@ -312,7 +322,7 @@
         padding-right: 10px;
     }
     .chat_input input {
-        height: 25px;
+        height: 55px;
         width: 90%;
         font-size: 15px;
         border: none;

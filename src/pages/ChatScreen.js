@@ -49,7 +49,7 @@ const ChatScreen = () => {
   const closeOptionsHandler = () => {
     setCloseOptions(true);
   };
-
+  console.log(JSON.parse(user))
   const sideBarVisibilityHandler = () => {
     if (!sideBarVisibility) {
       setSideBarVisibility(true);
@@ -287,14 +287,16 @@ const ChatScreen = () => {
             <div
               className="settings_container"
               onClick={settingsVisibilityHandler}>
-              <AccountCircleIcon
+              {JSON.parse(user).profile_photo ?
+              <img src={JSON.parse(user).profile_photo} alt="user_image" height={40} width={40} style={{borderRadius:"50%"}}/>
+              :<AccountCircleIcon
                 sx={{
                   fontSize: width < 480 ? "40px" : "50px",
                   marginRight: "20px",
                 }}
-              />
+              />}
               <div className="settings_button">
-                <SettingsOutlinedIcon />
+                <SettingsOutlinedIcon sx={{ fontSize: width < 480 ? "20px" : "25px" }}/>
               </div>
               {settingsVisibility && (
                 <div className="settings">
