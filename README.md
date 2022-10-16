@@ -1,70 +1,55 @@
-# Getting Started with Create React App
+## Chat App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An chat application that uses socket.io events to display popups when a new user joins or leaves the room as well as when a user in the room is typing. It is built with React, Redux, JavaScript, and CSS.
 
-## Available Scripts
 
-In the project directory, you can run:
+## Project Screen Shot(s)
 
-### `npm start`
+### Frontend Architecture
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+<img width="800" alt="frontend architecture" src="./images/frontend.jpeg">
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Homepage
+<img width="800" alt="home" src="./images/home.png">
 
-### `npm test`
+### Sign Up Page
+<img width="800" alt="home" src="./images/signin.png">
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Sign In Page
+<img width="800" alt="home" src="./images/login.png">
 
-### `npm run build`
+### Chat Page
+<img width="800" alt="home" src="./images/chat.png">
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Installation and Setup Instructions
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+First clone and set up the backend server [![here](https://github.com/Kachielite/Chat-App-Backend). Then clone down this repository. You will need `node` and `npm` installed globally on your machine.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Installation:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+`npm install`  
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+To Run Test Suite:  
 
-## Learn More
+`npm test`  
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+To Start Server:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+`npm start`  
 
-### Code Splitting
+To Visit App:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+`localhost:3000/ideas`  
 
-### Analyzing the Bundle Size
+## Reflection
+    This is a side project focused on solidifying my knowledge on the use of socket.io on both the client and server side. 
+    
+    The most challenging part was setting up event listeners and event emitters on both ends. After successfully setting up these events I noticed that the events were not working as expected. This issue was caused by not closing the old socket instance when the component is re-rendered. The old instance will continue to listen and cause memory overflow and update state errors. 
+    
+    Introducing the useEffect hook to close socket instances when the component is rendered resolved the issues.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The technologies implemented in this project are React, React-Router 6.0, Redux, socketIO, axios, and a significant amount of VanillaJS, JSX, and CSS. I chose to use the `create-react-app` boilerplate to minimize initial setup and invest more time in diving into weird technological rabbit holes. 
