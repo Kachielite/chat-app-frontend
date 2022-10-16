@@ -2,6 +2,9 @@
 
 An chat application that uses socket.io events to display popups when a new user joins or leaves the room as well as when a user in the room is typing. It is built with React, Redux, JavaScript, and CSS.
 
+# To Visit App:
+
+[Chat App](https://quick-chat-app22.netlify.app/)
 
 ## Project Screen Shot(s)
 
@@ -42,7 +45,7 @@ To Start Server:
 
 To Visit App:
 
-`localhost:3000/ideas`  
+`localhost:3000`  
 
 ## Reflection
 This is a side project focused on solidifying my knowledge on the use of socket.io on both the client and server side. 
