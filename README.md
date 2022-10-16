@@ -1,6 +1,6 @@
 ## Chat App
 
-An chat application that uses socket.io events to display popups when a new user joins or leaves the room as well as when a user in the room is typing. It is built with React, Redux, JavaScript, and CSS.
+A chat application that uses socket.io events to display popups when a new user joins or leaves the room as well as when a user in the room is typing. It is built with React, Redux, JavaScript, and CSS.
 
 # To Visit App:
 
