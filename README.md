@@ -6,7 +6,7 @@ An chat application that uses socket.io events to display popups when a new user
 
 [Chat App](https://quick-chat-app22.netlify.app/)
 
-## Project Screen Shot(s)
+## Project Screen Shot
 
 ### Frontend Architecture
 
